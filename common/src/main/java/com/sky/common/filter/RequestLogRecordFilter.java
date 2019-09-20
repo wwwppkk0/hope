@@ -2,6 +2,7 @@ package com.sky.common.filter;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -32,8 +33,13 @@ public class RequestLogRecordFilter extends OncePerRequestFilter {
     }
 
 
-    private void requestLog(ContentCachingRequestWrapper requestWrapper){
-        String requestBody =
+    private void requestLog(ContentCachingRequestWrapper requestWrapper) {
+        try {
+            String requestBody = IOUtils.toString(requestWrapper.getContentAsByteArray(),requestWrapper.getCharacterEncoding());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     private void responseLog(ContentCachingResponseWrapper responseWrapper){
